@@ -71,7 +71,9 @@ if __name__ == '__main__':
         models[k] = model
 
         # calculate coherence
-        coherence = CoherenceModel(model=model, texts=documents, dictionary=dictionary, coherence='c_v').get_coherence()
+        # topn must be smaller than the vocabulary (20 features): with gensim's default of 20, every topic's
+        # top words are the whole vocabulary and every model gets the same score
+        coherence = CoherenceModel(model=model, texts=documents, dictionary=dictionary, coherence='c_v', topn=10).get_coherence()
         coherences.append((k, coherence))
 
         print(f"Model with {k} topics - Coherence: {coherence:.4f}")
