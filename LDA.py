@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
     for filename in paul_files:
         path = os.path.join(input_dir, filename)
-        df = pd.read_csv(path)
+        df = pd.read_csv(path, dtype={"Segment": str})
 
         grouped = defaultdict(list)
         for _, row in df.iterrows():
@@ -120,7 +120,8 @@ if __name__ == '__main__':
 
         for filename in comparanda_files:
             path = os.path.join("deciles", filename)
-            df = pd.read_csv(path)
+            # read segments as text, otherwise e.g. "1.10" is parsed as the number 1.1 and treated as a duplicate of "1.1"
+            df = pd.read_csv(path, dtype={"Segment": str})
 
             # make sure data is clean
             df = df.drop_duplicates(subset=["Segment", "Characteristic"])
